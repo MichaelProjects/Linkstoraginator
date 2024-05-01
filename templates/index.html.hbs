@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <script
+            src="https://unpkg.com/htmx.org@1.9.10"
+            integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+            crossorigin="anonymous"
+        ></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
+        <link rel="icon" type="image/png" href="/public/favicon.ico" />
+    </head>
+    <body>
+        <script>
+            document
+                .getElementById("submit-form")
+                .addEventListener("submit", function (event) {
+                    let textField = document.getElementById("textfield");
+                    if (!textField.value.trim()) {
+                        alert("Please fill out the text field.");
+                        event.preventDefault(); // Prevent form submission
+                    }
+                });
+        </script>
+        <div
+            class="w-screen h-[60px] shadow flex items-center bg-[#1A1C24] text-white pl-4 pr-4"
+        >
+            <p class="text-xl">Linkstoraginator</p>
+            <form
+                class="ml-20"
+                id="submit-form"
+                hx-post="/recipe"
+                hx-swap="outerHTML"
+                hx-trigger="submit"
+                hx-target="#response"
+                hx-ext="json-enc"
+            >
+                <input
+                    class="w-[600px] rounded-xl h-[30px] p-1 text-black"
+                    type="text"
+                    name="url"
+                    id="textfield"
+                    required
+                    placeholder="Enter text"
+                />
+                <button class="hover:bg-[#aa61fe] p-2 rounded-xl" type="submit">
+                    Confirm
+                </button>
+                <div id="response"></div>
+            </form>
+            <!-- <input
+                class="form-control"
+                type="search"
+                name="search"
+                placeholder="search something..."
+                hx-post="/search"
+                hx-trigger="input changed delay:500ms, search"
+                hx-target="#search-results"
+                hx-indicator=".htmx-indicator"
+            /> -->
+        </div>
+        <div id="search-results"></div>
+        <div class="h-screen bg-[#0D0F13] text-white">
+            <div hx-get="/recipe" hx-trigger="load" hx-swap="outerHTML">
+                Loading recipes...
+            </div>
+        </div>
+    </body>
+</html>

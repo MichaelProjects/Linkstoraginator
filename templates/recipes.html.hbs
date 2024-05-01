@@ -1,0 +1,11 @@
+{{#if nothing }}
+    <div>No recipes, add some to find them here!</div>
+  {{else}}
+  <div class="w-screen flex flex-col items-center justify-center">
+      <h1 class="mt-12 mb-5 text-xl">Recently added</h1>
+      {{#each recipes}}
+        {{> recipe this }}
+      {{/each}}
+    </div>
+
+  {{/if}}
