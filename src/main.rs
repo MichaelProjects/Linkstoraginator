@@ -4,12 +4,15 @@ pub mod types;
 pub mod utils;
 
 use std::env;
+use std::net::IpAddr;
 
 use chrono::Utc;
 use meta_extrator::extract_from_url;
 use recipe_dao::{MongoRecipeDao, RecipeDao};
+use rocket::http::uri::fmt::FromUriParam;
 use rocket::http::Status;
 use rocket::serde::json::Json;
+use rocket::Config;
 use rocket::{delete, fs::FileServer, get, launch, post, routes};
 use rocket_dyn_templates::{context, Template};
 use serde::{Deserialize, Serialize};
@@ -85,12 +88,18 @@ fn rocket() -> _ {
     if env::var("db_uri").is_err() {
         panic!("Need to set db_uri in env.")
     }
-
+    let port = env::var("port");
+    let mut config = Config::debug_default();
+    config.address = "0.0.0.0".parse().unwrap();
+    if port.is_ok() {
+        config.port = port.unwrap().parse().unwrap()
+    }
     rocket::build()
         .mount(
             "/",
             routes![get_index, search, add_recipe, get_recipes, delete_recipe],
         )
         .mount("/public", FileServer::from("public"))
+        .configure(config)
         .attach(Template::fairing())
 }

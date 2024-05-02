@@ -10,6 +10,14 @@ The [Linkstoraginator] is designed to help you comfortably browse through the bl
 
 ![screenshot](assets/screen1.png)
 
+### Quick start
+
+```bash
+# First start mongodb if you dont have a running instance
+docker run -p 0.0.0.0:27017:27017 --name mongodb mongodb:latest
+# then start
+docker run -p 0.0.0.0:8000:8000 -e port="8000" -e db_uri="mongodb://mongodb:27017" michaelprojects/linkstoraginator:0.4
+
 ### Future Outlook
 
 Like every "cool" product in 2024, it’s crucial to sprinkle some AI magic into the mix. Here are some futuristic ideas (but hey, if you want something specific, just fork us and fire up a pull request!):
@@ -30,3 +38,4 @@ Like every "cool" product in 2024, it’s crucial to sprinkle some AI magic into
 ### Copyright notice
 
 The name 'Vercise' and the company logo are exclusive property of MichaelProjects and may not be used in any redistributions or derivative works without explicit permission.
+```
